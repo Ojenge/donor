@@ -13,7 +13,7 @@ const recommendations_1 = __importDefault(require("./routes/recommendations"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: 'http://localhost:3001',
+    origin: 'https//donor.delivery.go.ke',
     credentials: true,
 }));
 app.use(express_1.default.json());

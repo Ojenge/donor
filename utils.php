@@ -4,7 +4,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 function getDbConnection() {
-    return new mysqli('localhost', 'root', 'Hermione#1989', 'analytics_dashboard');
+    return new mysqli('localhost', 'root', '', 'analytics_dashboard');
 }
 
 function generateJWT($userId, $role) {

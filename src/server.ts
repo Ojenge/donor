@@ -25,6 +25,10 @@ app.use('/api/recommendations', recommendationsRoutes);
 app.use('/api/users', usersRoutes);
 const PORT = process.env.PORT || 5000;
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 }); 

@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'https//donor.delivery.go.ke',
+  origin: 'https://donor.delivery.go.ke',
   credentials: true,
 }));
 app.use(express.json());

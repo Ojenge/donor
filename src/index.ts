@@ -20,7 +20,7 @@ const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://donor.delivery.go.ke',
   credentials: true
 }));
 app.use(helmet());

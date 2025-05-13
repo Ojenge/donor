@@ -3,31 +3,67 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { config } from 'dotenv';
 import { pool } from './db';
-import mergedRoutes from './routes/mergedRoutes'; // <- adjust path as needed
+import analyticsRoutes from './routes/analytics';
+import projectsRoutes from './routes/projects';
+import authRoutes from './routes/auth';
+import uploadRoutes from './routes/upload';
+import usersRoutes from './routes/users';
+import { authenticateToken } from './middleware/auth';
+import recommendationsRoutes from './routes/recommendations';
+// import mergedRoutes from './routes/mergedRoutes'; // update with correct path
 
-// Load env variables
+
+// Load environment variables
 config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+const allowedOrigins = ['https://donor.delivery.go.ke'];
 
 // Middleware
 app.use(cors({
-  origin: 'https://donor.delivery.go.ke',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
+
+app.options('*', cors());
+
+
+
+// app.use(cors({
+//   origin: 'https://donor.delivery.go.ke',
+//   credentials: true
+// }));
 app.use(helmet());
 app.use(express.json());
 
-// Health check
-app.get('/api/health', (_req, res) => {
+// Health check endpoint
+app.get('/api/health', (_req: express.Request, res: express.Response) => {
   res.json({ status: 'ok' });
 });
 
-// Register merged routes under /api
-app.use('/api', mergedRoutes);
 
-// Error handling
+// Routes
+// app.use('/api', mergedRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/analytics/users', authenticateToken, usersRoutes);
+app.use('/api/analytics', authenticateToken, analyticsRoutes);
+app.use('/api/analytics/projects', authenticateToken, projectsRoutes);
+app.use('/api/analytics/upload', authenticateToken, uploadRoutes);
+app.use('/api/analytics/recommendations', authenticateToken, recommendationsRoutes);
+
+
+
+
+// Error handling middleware
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
@@ -38,13 +74,14 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-// Test DB connection
+// Handle database connection
 pool.getConnection()
-  .then(conn => {
+  .then(connection => {
     console.log('Database connected successfully');
-    conn.release();
+    connection.release();
   })
   .catch(err => {
     console.error('Error connecting to the database:', err);
     process.exit(1);
-  });
+  }); 
+

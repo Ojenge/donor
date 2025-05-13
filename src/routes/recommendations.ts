@@ -4,7 +4,7 @@ import { pool } from '../db';
 const router = express.Router();
 
 // Get all recommendations
-router.get('/', async (req, res) => {
+router.get('/api/analytics/recommendations/', async (req, res) => {
   try {
     const [recommendations] = await pool.query(`
       SELECT 
@@ -29,8 +29,9 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 // Get recommendations statistics
-router.get('/stats', async (req, res) => {
+router.get('/api/analytics/recommendations/stats', async (req, res) => {
   try {
     // Get recommendations by priority
     const [priorityStats] = await pool.query(`
@@ -80,7 +81,7 @@ router.get('/stats', async (req, res) => {
 });
 
 // Get recommendation by ID
-router.get('/:id', async (req, res) => {
+router.get('/api/analytics/recommendations//:id', async (req, res) => {
   try {
     const [recommendations] = await pool.query(
       'SELECT * FROM recommendations WHERE id = ?',
@@ -142,7 +143,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update recommendation
-router.put('/:id', async (req, res) => {
+router.put('/api/analytics/recommendations//:id', async (req, res) => {
   const {
     project_id,
     recommendation_text,
@@ -190,7 +191,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete recommendation
-router.delete('/:id', async (req, res) => {
+router.delete('/api/analytics/recommendations//:id', async (req, res) => {
   try {
     await pool.query('DELETE FROM recommendations WHERE id = ?', [req.params.id]);
     res.json({ message: 'Recommendation deleted successfully' });

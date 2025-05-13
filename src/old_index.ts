@@ -54,11 +54,11 @@ app.get('/api/health', (_req: express.Request, res: express.Response) => {
 // Routes
 app.use('/api', mergedRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/users', authenticateToken, usersRoutes);
+app.use('/api/analytics/users', authenticateToken, usersRoutes);
 app.use('/api/analytics', authenticateToken, analyticsRoutes);
-app.use('/api/projects', authenticateToken, projectsRoutes);
-app.use('/api/upload', authenticateToken, uploadRoutes);
-app.use('/api/recommendations', authenticateToken, recommendationsRoutes);
+app.use('/api/analytics/projects', authenticateToken, projectsRoutes);
+app.use('/api/analytics/upload', authenticateToken, uploadRoutes);
+app.use('/api/analytics/recommendations', authenticateToken, recommendationsRoutes);
 
 
 

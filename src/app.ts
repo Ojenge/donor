@@ -10,8 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/projects', projectsRouter);
-app.use('/api/recommendations', recommendationsRouter);
+app.use('/api/analytics/projects', projectsRouter);
+app.use('/api/analytics/recommendations', recommendationsRouter);
 app.use('/api/analytics', analyticsRouter);
 
 export default app; 

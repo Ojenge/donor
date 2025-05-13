@@ -17,12 +17,30 @@ config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+const allowedOrigins = ['https://donor.delivery.go.ke'];
 
 // Middleware
 app.use(cors({
-  origin: 'https://donor.delivery.go.ke',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
+
+app.options('*', cors());
+
+
+
+// app.use(cors({
+//   origin: 'https://donor.delivery.go.ke',
+//   credentials: true
+// }));
 app.use(helmet());
 app.use(express.json());
 

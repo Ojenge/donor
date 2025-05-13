@@ -24,7 +24,7 @@ interface UserRow extends RowDataPacket {
 }
 
 // Login endpoint
-router.post('/login', async (req: LoginRequest, res: Response): Promise<void> => {
+router.post('/api/auth/login', async (req: LoginRequest, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
   try {
